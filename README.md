@@ -5,3 +5,4 @@
 - Docker
 _________
 ### Készítette: Nyeste Réka (GKE37T)
+### Miskolci Egyetem, mérnökinformatikus MSC
