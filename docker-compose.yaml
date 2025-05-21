@@ -1,0 +1,59 @@
+version: "3"
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - app-network
+
+  producer:
+    build: ./producer
+    depends_on:
+      - rabbitmq
+    networks:
+      - app-network
+
+  worker1:
+    build: ./worker
+    environment:
+      - CLIENT_ID=1
+    depends_on:
+      - rabbitmq
+    networks:
+      - app-network
+
+  worker2:
+    build: ./worker
+    environment:
+      - CLIENT_ID=2
+    depends_on:
+      - rabbitmq
+    networks:
+      - app-network
+
+  worker3:
+    build: ./worker
+    environment:
+      - CLIENT_ID=3
+    depends_on:
+      - rabbitmq
+    networks:
+      - app-network
+
+  logger:
+    build: ./logger
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBIT_HOST=rabbitmq
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
